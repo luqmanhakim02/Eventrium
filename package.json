@@ -1,0 +1,28 @@
+{
+  "name": "eventrium",
+  "version": "1.0.0",
+  "description": "a web application where users can discover and host event",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luqmanhakim02/Eventrium.git"
+  },
+  "keywords": [
+    "Algorand",
+    "smart contract",
+    "blockchain",
+    "web app"
+  ],
+  "author": "LATZ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luqmanhakim02/Eventrium/issues"
+  },
+  "homepage": "https://github.com/luqmanhakim02/Eventrium#readme",
+  "dependencies": {
+    "algosdk": "^2.5.0"
+  }
+}
