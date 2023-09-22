@@ -2305,6 +2305,24 @@ ol {
 	margin-left: 5px;
 }
 
+.blog__item__text .blog__btn__special {
+	display: inline-block;
+	font-size: 14px;
+	color: #ffffff;
+	background-color: #52AB98;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	border: 1px solid #b2b2b2;
+	padding: 14px 20px 12px;
+	border-radius: 25px;
+}
+
+.blog__item__text .blog__btn__special span {
+	position: relative;
+	top: 1px;
+	margin-left: 5px;
+}
+
 .blog__pagination {
 	padding-top: 5px;
 	position: relative;
