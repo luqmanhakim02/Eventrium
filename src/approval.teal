@@ -1,0 +1,116 @@
+// Define application state schema
+txn ApplicationID
+int 0
+==
+bz init
+
+// Handle application creation
+txn ApplicationID
+int 0
+==
+txn TypeEnum
+int appl
+==
+&&
+bnz handle_create
+
+// Handle application call
+txn ApplicationID
+int 0
+==
+bnz handle_call
+
+// Handle application initialization
+handle_init:
+    int 1 // Global Int: Event counter (starts from 1)
+    int 0 // Global Byteslice: Reserved
+    int 0 // Local Int: Reserved
+    int 0 // Local Byteslice: Reserved
+    return
+
+// Event struct definition
+event:
+    byte "event_name"
+    byte ""
+    byte "event_date"
+    byte ""
+    byte "event_price"
+    byte ""
+
+// Handle event creation
+handle_create:
+    // Check if the call is authorized (sender is the creator)
+    txn Sender
+    addr "your-sender-address-here"
+    ==
+    bnz authorized
+
+    // Load the current event counter (global state)
+    int 0
+    app_global_get
+
+    // Increment the event counter
+    int 1
+    +
+    app_global_put
+
+    // Create an event struct with event details
+    event
+    "Event Name: "
+    txn ApplicationID
+    itob
+    put
+    "Event Date: "
+    txna ApplicationID
+    put
+    "Event Price: "
+    txna ApplicationID
+    put
+
+    // Mark the call as successful
+    int 1
+    return
+
+authorized:
+    // Return 0 to indicate unauthorized call
+    int 0
+    return
+
+// Handle event joining
+handle_call:
+    // Load event ID from the call data
+    byte "Event ID: "
+    concat
+    txna ApplicationID
+    itob
+    ==
+    bnz event_exists
+
+    // Event does not exist
+    int 0
+    return
+
+event_exists:
+    // Load event details from the application local state
+    event
+    "Event Name: "
+    get
+    "Event Date: "
+    get
+    "Event Price: "
+    get
+
+    // Check if the payment amount is sufficient
+    int 0
+    txna Amount
+    >=
+    bnz payment_sufficient
+
+    // Payment is insufficient
+    int 0
+    return
+
+payment_sufficient:
+    // Payment is sufficient, allow the user to join
+    int 1
+    return
