@@ -1,8 +1,4 @@
-// Define application state schema
-txn ApplicationID
-int 0
-==
-bz init
+#pragma version 6
 
 // Handle application creation
 txn ApplicationID
@@ -20,52 +16,47 @@ int 0
 ==
 bnz handle_call
 
-// Handle application initialization
-handle_init:
-    int 1 // Global Int: Event counter (starts from 1)
-    int 0 // Global Byteslice: Reserved
-    int 0 // Local Int: Reserved
-    int 0 // Local Byteslice: Reserved
-    return
-
-// Event struct definition
-event:
-    byte "event_name"
-    byte ""
-    byte "event_date"
-    byte ""
-    byte "event_price"
-    byte ""
-
 // Handle event creation
 handle_create:
     // Check if the call is authorized (sender is the creator)
     txn Sender
-    addr "your-sender-address-here"
+    byte "CPNL2EV5SCESLNFKLCBKJ4GNTUXADAWS7BVGRQA5EWYRHK3N6EJZHBHGSY"
     ==
     bnz authorized
 
     // Load the current event counter (global state)
-    int 0
+    byte "event_counter" // Use a meaningful key
     app_global_get
 
     // Increment the event counter
     int 1
     +
+    
+    // Store the updated counter
+    byte "event_counter"
+    swap
     app_global_put
 
     // Create an event struct with event details
-    event
-    "Event Name: "
+    byte "Event Name: "
+    byte ""
+    byte "Event Date: "
+    byte ""
+    byte "Event Price: "
+    byte ""
+    concat
     txn ApplicationID
     itob
-    put
-    "Event Date: "
-    txna ApplicationID
-    put
-    "Event Price: "
-    txna ApplicationID
-    put
+    concat
+    concat
+    txn ApplicationID
+    itob
+    concat
+    concat
+    txn ApplicationID
+    itob
+    concat
+    concat
 
     // Mark the call as successful
     int 1
@@ -81,8 +72,11 @@ handle_call:
     // Load event ID from the call data
     byte "Event ID: "
     concat
-    txna ApplicationID
+    txn ApplicationID
     itob
+    concat
+    byte "event_counter" // Use the same key as in handle_create
+    app_global_get
     ==
     bnz event_exists
 
@@ -92,17 +86,16 @@ handle_call:
 
 event_exists:
     // Load event details from the application local state
-    event
-    "Event Name: "
-    get
-    "Event Date: "
-    get
-    "Event Price: "
-    get
+    byte "Event Name: "
+    app_local_get
+    byte "Event Date: "
+    app_local_get
+    byte "Event Price: "
+    app_local_get
 
     // Check if the payment amount is sufficient
     int 0
-    txna Amount
+    txn Amount
     >=
     bnz payment_sufficient
 

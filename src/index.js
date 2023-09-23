@@ -13,7 +13,7 @@ const algodClient = new algosdk.Algodv2(algodToken, algodServer);
 const senderMnemonic = process.env.SENDER_MNEMONIC;
 const senderAccount = algosdk.mnemonicToSecretKey(senderMnemonic);
 
-const contractAddress = 'your-actual-smart-contract-address';
+const contractAddress = '1001';
 
 document.addEventListener('DOMContentLoaded', () => {
     const createEventForm = document.getElementById('createEventForm');
