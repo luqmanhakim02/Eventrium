@@ -1,6 +1,5 @@
-const express = require('express');
-const algosdk = require('algosdk');
-const path = require('path');
+import express from '/node_modules/express';
+import algosdk, { waitForConfirmation } from '/node_modules/algosdk';
 
 const app = express();
 const port = 3000; // Choose any port you prefer
@@ -13,6 +12,8 @@ const algodPort = '443';
 const senderMnemonic = 'leader judge flock cargo maid pretty junior sound squirrel frequent palace ignore machine nominee vibrant peace canyon expand tomorrow tomorrow custom agree fatal able scale'; // The sender's mnemonic (private key) to sign transactions
 
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+
+document.getElementById ("registerLink").addEventListener("click", deductEventCost, false);
 
 async function deductEventCost() {
   try {

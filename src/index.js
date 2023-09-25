@@ -1,6 +1,6 @@
-const express = require('express');
-const algosdk = require('algosdk');
-const path = require('path');
+import express from 'express';
+import algosdk, { waitForConfirmation } from 'algosdk';
+import path from "path";
 
 const app = express();
 const port = 3000; // Choose any port you prefer
@@ -17,7 +17,7 @@ const senderMnemonic = 'leader judge flock cargo maid pretty junior sound squirr
 
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
-async function deductEventCost() {
+export async function deductEventCost() {
   try {
     const senderAccount = algosdk.mnemonicToSecretKey(senderMnemonic);
 

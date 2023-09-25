@@ -23,9 +23,6 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
-    <script>
-      const activePage = "register-event";
-    </script>
   </head>
 
   <body>
@@ -192,13 +189,124 @@
               </div>
             </div>
             <div>
-              <div style="height: 130px; width: 250px; border-radius: 24px; border: 3.5px #f3f6fa solid; ">
+              <div
+                style="
+                  height: 130px;
+                  width: 250px;
+                  border-radius: 24px;
+                  border: 3.5px #f3f6fa solid;
+                "
+              >
+                <script type="module">
+                  import express from "./node_modules/express/index.js";
+                  import algosdk from "./node_modules/algosdk/dist/browser/algosdk.min.js";
+
+                  const app = express();
+                  const port = 3000; // Choose any port you prefer
+
+                  app.use(express.static(__dirname));
+
+                  const algodToken = ""; // Your AlgoD API token
+                  const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
+                  const algodPort = "443";
+                  const senderMnemonic =
+                    "leader judge flock cargo maid pretty junior sound squirrel frequent palace ignore machine nominee vibrant peace canyon expand tomorrow tomorrow custom agree fatal able scale"; // The sender's mnemonic (private key) to sign transactions
+
+                  const algodClient = new algosdk.Algodv2(
+                    algodToken,
+                    algodServer,
+                    algodPort
+                  );
+
+                  document
+                    .getElementById("registerLink")
+                    .addEventListener("click", deductEventCost, false);
+
+                  async function deductEventCost() {
+                    try {
+                      const senderAccount =
+                        algosdk.mnemonicToSecretKey(senderMnemonic);
+
+                      // Create a transaction to interact with the smart contract
+                      const txnParams = await algodClient
+                        .getTransactionParams()
+                        .do();
+                      const txn = algosdk.makePaymentTxnWithSuggestedParams(
+                        senderAccount.addr,
+                        "TU7D7HZGH572F4TWBLCTLJWCLCW54TQ2LBQBLG7Y4OMARKXK3EYYLLC73U", // Replace with the receiver's address
+                        100000, // Amount in microAlgos (100 Algos)
+                        undefined,
+                        undefined,
+                        txnParams
+                      );
+
+                      // Sign the transaction
+                      const signedTxn = algosdk.signTransaction(
+                        txn,
+                        senderAccount.sk
+                      );
+
+                      // Submit the transaction to the Algorand network
+                      const txId = await algodClient
+                        .sendRawTransaction(signedTxn.blob)
+                        .do();
+
+                      console.log(`Transaction ID: ${txId}`);
+                      console.log("Event cost deducted successfully.");
+                    } catch (error) {
+                      console.error("Error deducting event cost:", error);
+                    }
+                  }
+
+                  app.listen(port, () => {
+                    console.log(
+                      `Server is running on http://localhost:${port}`
+                    );
+                  });
+                </script>
                 <center>
-                  <div style="margin-top : 15px; height: 50px; width: 80%; background: #3983ad; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
-                  <a id="registerLink" style="text-align: center; color: white; font-family: Cairo; font-weight: 700; font-size: 25px; line-height: 34px; word-wrap: break-word; cursor: pointer;" onclick="deductEventCost()">REGISTER NOW</a>
+                  <div
+                    style="
+                      margin-top: 15px;
+                      height: 50px;
+                      width: 80%;
+                      background: #3983ad;
+                      border-radius: 12px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                  >
+                    <a
+                      id="registerLink"
+                      style="
+                        text-align: center;
+                        color: white;
+                        font-family: Cairo;
+                        font-weight: 700;
+                        font-size: 25px;
+                        line-height: 34px;
+                        word-wrap: break-word;
+                        cursor: pointer;
+                      "
+                      >REGISTER NOW</a
+                    >
                   </div>
                 </center>
-                <div style=" text-align: center; color: #424242; font-size: 30px; font-family: Cairo; font-weight: 600; line-height: 50px; word-wrap: break-word; width: 100%;">100 ALGO</div>
+                <div
+                  style="
+                    text-align: center;
+                    color: #424242;
+                    font-size: 30px;
+                    font-family: Cairo;
+                    font-weight: 600;
+                    line-height: 50px;
+                    word-wrap: break-word;
+                    width: 100%;
+                  "
+                >
+                  100 ALGO
+                </div>
               </div>
             </div>
           </div>
@@ -294,6 +402,6 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="src/index.js"></script>
+    <!-- <script type="module" src="index.js"></script> -->
   </body>
 </html>
