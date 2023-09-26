@@ -6,7 +6,7 @@ const algodToken = ""; // Your AlgoD API token
 const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
 const algodPort = "443";
 const senderMnemonic =
-  "leader judge flock cargo maid pretty junior sound squirrel frequent palace ignore machine nominee vibrant peace canyon expand tomorrow tomorrow custom agree fatal able scale"; // The sender's mnemonic (private key) to sign transactions
+  "hope arrest skill still oblige police lounge wet eager much face seven useless slim retreat fatal word hamster push pause deny rival outside abstract check"; // The sender's mnemonic (private key) to sign transactions
 
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
@@ -19,8 +19,8 @@ function JoinEvent() {
       const txnParams = await algodClient.getTransactionParams().do();
       const txn = algosdk.makePaymentTxnWithSuggestedParams(
         senderAccount.addr,
-        "TU7D7HZGH572F4TWBLCTLJWCLCW54TQ2LBQBLG7Y4OMARKXK3EYYLLC73U", // Replace with the receiver's address
-        100000, // Amount in microAlgos (100 Algos)
+        "I2BLEMKXM3RXEBCIEZCYZFNH7R354CUWGQQ7VJ73UIZ5HEKLLRU73W36W4", // Replace with the receiver's address
+        100000000, // Amount in microAlgos (100 Algos)
         undefined,
         undefined,
         txnParams
@@ -30,10 +30,15 @@ function JoinEvent() {
       const signedTxn = algosdk.signTransaction(txn, senderAccount.sk);
 
       // Submit the transaction to the Algorand network
-      const txId = await algodClient.sendRawTransaction(signedTxn.blob).do();
+      const response = await algodClient.sendRawTransaction(signedTxn.blob).do();
 
-      console.log(`Transaction ID: ${txId}`);
-      console.log("Event cost deducted successfully.");
+      if (response.txId) {
+        const txId = response.txId;
+        console.log(`Transaction ID: ${txId}`);
+        console.log("Event cost deducted successfully.");
+      } else {
+        console.error("Transaction failed. Response:", response);
+      }
     } catch (error) {
       console.error("Error deducting event cost:", error);
     }
@@ -73,34 +78,6 @@ function JoinEvent() {
       </div>
     </center>
   );
-}
-
-async function deductEventCost() {
-  try {
-    const senderAccount = algosdk.mnemonicToSecretKey(senderMnemonic);
-
-    // Create a transaction to interact with the smart contract
-    const txnParams = await algodClient.getTransactionParams().do();
-    const txn = algosdk.makePaymentTxnWithSuggestedParams(
-      senderAccount.addr,
-      "TU7D7HZGH572F4TWBLCTLJWCLCW54TQ2LBQBLG7Y4OMARKXK3EYYLLC73U", // Replace with the receiver's address
-      100000, // Amount in microAlgos (100 Algos)
-      undefined,
-      undefined,
-      txnParams
-    );
-
-    // Sign the transaction
-    const signedTxn = algosdk.signTransaction(txn, senderAccount.sk);
-
-    // Submit the transaction to the Algorand network
-    const txId = await algodClient.sendRawTransaction(signedTxn.blob).do();
-
-    console.log(`Transaction ID: ${txId}`);
-    console.log("Event cost deducted successfully.");
-  } catch (error) {
-    console.error("Error deducting event cost:", error);
-  }
 }
 
 export default JoinEvent;
