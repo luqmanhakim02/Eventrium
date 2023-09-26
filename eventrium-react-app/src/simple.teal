@@ -1,0 +1,26 @@
+#pragma version 6
+
+// Define the event joining cost (in microAlgos)
+int 100000 // 100 Algos in microAlgos
+
+// Check if the sender's balance is sufficient
+txn Sender
+balance
+int 100000 // 100 Algos in microAlgos
+>=
+bz insufficient_balance
+
+// Deduct the event joining cost from the sender's balance
+int 100000 // 100 Algos in microAlgos
+-
+txn Sender
+balance // Store the updated balance
+
+// Return success
+int 1
+return
+
+insufficient_balance:
+// Return failure for insufficient balance
+int 0
+return
