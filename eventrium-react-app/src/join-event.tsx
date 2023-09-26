@@ -105,7 +105,7 @@ async function deductEventCost() {
 
 export default JoinEvent;
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('join-event')!).render(
   <React.StrictMode>
     <JoinEvent />
   </React.StrictMode>,
