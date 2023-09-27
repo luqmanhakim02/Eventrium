@@ -5,7 +5,7 @@ const algodToken = ""; // Your AlgoD API token
 const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
 const algodPort = "443";
 const senderMnemonic =
-  "hope arrest skill still oblige police lounge wet eager much face seven useless slim retreat fatal word hamster push pause deny rival outside abstract check"; // The sender's mnemonic (private key) to sign transactions
+  "survey pride derive laundry increase result nerve addict trust zone baby element recipe comfort wheat such name master axis zoo broom engage inflict above rely"; // The sender's mnemonic (private key) to sign transactions
 
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
@@ -19,7 +19,7 @@ function JoinEvent() {
       const txnParams = await algodClient.getTransactionParams().do();
       const txn = algosdk.makePaymentTxnWithSuggestedParams(
         senderAccount.addr,
-        "I2BLEMKXM3RXEBCIEZCYZFNH7R354CUWGQQ7VJ73UIZ5HEKLLRU73W36W4", // Replace with the receiver's address
+        "LWEHP7VSZGN7IEBOWP25D2EMUDZSRWA7JNXA52XJZQ6RY62WO4D44HG3FM", // Replace with the receiver's address
         100000000, // Amount in microAlgos (100 Algos)
         undefined,
         undefined,
