@@ -1,6 +1,5 @@
 import algosdk from "algosdk";
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { setTransactionID } from './constants.ts';
 
 const algodToken = ""; // Your AlgoD API token
 const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
@@ -11,6 +10,7 @@ const senderMnemonic =
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
 function JoinEvent() {
+
   async function deductEventCost() {
     try {
       const senderAccount = algosdk.mnemonicToSecretKey(senderMnemonic);
@@ -36,6 +36,7 @@ function JoinEvent() {
         const txId = response.txId;
         console.log(`Transaction ID: ${txId}`);
         console.log("Event cost deducted successfully.");
+        setTransactionID(txId);
       } else {
         console.error("Transaction failed. Response:", response);
       }
@@ -81,9 +82,3 @@ function JoinEvent() {
 }
 
 export default JoinEvent;
-
-ReactDOM.createRoot(document.getElementById('join-event')!).render(
-  <React.StrictMode>
-    <JoinEvent />
-  </React.StrictMode>,
-)
