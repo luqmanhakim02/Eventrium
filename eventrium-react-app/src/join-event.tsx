@@ -5,6 +5,7 @@ const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
 const algodPort = "443";
 const senderMnemonic =
   "survey pride derive laundry increase result nerve addict trust zone baby element recipe comfort wheat such name master axis zoo broom engage inflict above rely"; // The sender's mnemonic (private key) to sign transactions
+//change this
 
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
@@ -16,6 +17,7 @@ function JoinEvent() {
       // Create a transaction to interact with the smart contract
       const txnParams = await algodClient.getTransactionParams().do();
       const txn = algosdk.makePaymentTxnWithSuggestedParams(
+        //change this
         senderAccount.addr,
         "LWEHP7VSZGN7IEBOWP25D2EMUDZSRWA7JNXA52XJZQ6RY62WO4D44HG3FM", // Replace with the receiver's address
         10, // Amount in microAlgos (100 Algos) = 100000000
@@ -38,7 +40,7 @@ function JoinEvent() {
         console.log("Event cost deducted successfully.");
         localStorage.setItem("transactionID", txId);
         window.location.href = "my-ticket.html";
-        
+
       } else {
         console.error("Transaction failed. Response:", response);
       }
