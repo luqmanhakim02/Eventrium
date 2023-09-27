@@ -1,5 +1,4 @@
 import algosdk from "algosdk";
-import { setTransactionID } from './constants.ts';
 
 const algodToken = ""; // Your AlgoD API token
 const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
@@ -10,7 +9,6 @@ const senderMnemonic =
 const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
 
 function JoinEvent() {
-
   async function deductEventCost() {
     try {
       const senderAccount = algosdk.mnemonicToSecretKey(senderMnemonic);
@@ -20,7 +18,7 @@ function JoinEvent() {
       const txn = algosdk.makePaymentTxnWithSuggestedParams(
         senderAccount.addr,
         "LWEHP7VSZGN7IEBOWP25D2EMUDZSRWA7JNXA52XJZQ6RY62WO4D44HG3FM", // Replace with the receiver's address
-        100000000, // Amount in microAlgos (100 Algos)
+        10, // Amount in microAlgos (100 Algos) = 100000000
         undefined,
         undefined,
         txnParams
@@ -30,13 +28,17 @@ function JoinEvent() {
       const signedTxn = algosdk.signTransaction(txn, senderAccount.sk);
 
       // Submit the transaction to the Algorand network
-      const response = await algodClient.sendRawTransaction(signedTxn.blob).do();
+      const response = await algodClient
+        .sendRawTransaction(signedTxn.blob)
+        .do();
 
       if (response.txId) {
         const txId = response.txId;
         console.log(`Transaction ID: ${txId}`);
         console.log("Event cost deducted successfully.");
-        setTransactionID(txId);
+        localStorage.setItem("transactionID", txId);
+        window.location.href = "my-ticket.html";
+        
       } else {
         console.error("Transaction failed. Response:", response);
       }
@@ -72,7 +74,7 @@ function JoinEvent() {
             cursor: "pointer",
           }}
           onClick={deductEventCost} // Bind the function to the component's context
-        href="#"
+          href="#"
         >
           REGISTER NOW
         </a>
