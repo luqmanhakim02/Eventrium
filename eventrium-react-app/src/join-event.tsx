@@ -20,7 +20,7 @@ function JoinEvent() {
         //change this
         senderAccount.addr,
         "LWEHP7VSZGN7IEBOWP25D2EMUDZSRWA7JNXA52XJZQ6RY62WO4D44HG3FM", // Replace with the receiver's address
-        10, // Amount in microAlgos (100 Algos) = 100000000
+        100000000, // Amount in microAlgos (100 Algos) = 100000000
         undefined,
         undefined,
         txnParams
