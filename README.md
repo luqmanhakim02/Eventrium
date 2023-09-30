@@ -10,7 +10,7 @@ Eventrium simplifies event coordination, be it a grand conference, a cozy meetup
 - [Overview](#overview-)
 - [Features](#features-)
 - [Installation](#installation-)
-- [Blockchain/Smart Contract Integration](#blockchainsmart-contract-integration-%EF%B8%8F)
+- [Blockchain/Smart Contract Integration](#blockchainsmart-contract-integration-%EF%B8%8F)  (Click Here)
 - [Take a Note](#-note-for-future-development-)
 
 ## Features 🚀
