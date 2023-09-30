@@ -64,7 +64,7 @@ Welcome to the early version of our web app! 🌟
 
 - The sender and receiver addresses you see in the code are here for testing purposes, giving you a sneak peek into our blockchain prowess.
   
-- 🌐 Hold onto your seats, as we have exciting plans for future updates. We're gearing up to introduce a secure and user-friendly **pera wallet** for those smooth-as-silk transactions.
+- 🌐 Hold onto your seats, as we have exciting plans for future updates. We're gearing up to introduce a secure and user-friendly [**pera wallet**](https://github.com/perawallet/connect) for those smooth-as-silk transactions.
 
 Stay with us on this incredible journey as we keep enhancing the Eventrium experience! Your feedback and ingenious ideas are like gold to us. 🙌
 
