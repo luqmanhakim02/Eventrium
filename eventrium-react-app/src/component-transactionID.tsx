@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client'
 import { getTransactionID } from './constants'; 
 
 function TransactionID() {
@@ -23,9 +21,3 @@ function TransactionID() {
 }
 
 export default TransactionID;
-
-ReactDOM.createRoot(document.getElementById('transactionID')!).render(
-    <React.StrictMode>
-      <TransactionID />
-    </React.StrictMode>,
-)
