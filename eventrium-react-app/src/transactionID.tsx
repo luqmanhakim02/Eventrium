@@ -1,9 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import TransactionID from './component-transactionID'
+import React from "react";
+import ReactDOM from "react-dom";
+import TransactionID from "./component-transactionID";
 
-ReactDOM.createRoot(document.getElementById('transactionID')!).render(
-    <React.StrictMode>
-      <TransactionID />
-    </React.StrictMode>,
-)
+ReactDOM.render(
+  <React.StrictMode>
+    <TransactionID />
+  </React.StrictMode>,
+  document.getElementById("transactionID")
+);

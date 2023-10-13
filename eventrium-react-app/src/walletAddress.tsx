@@ -1,11 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import WalletAddress from './component-walletAddress'
+import React from "react";
+import ReactDOM from "react-dom";
+import WalletAddress from "./component-walletAddress";
 
-ReactDOM.createRoot(document.getElementById('walletAddress')!).render(
-    <React.StrictMode>
-      <WalletAddress />
-    </React.StrictMode>,
-)
-
-//return walletAddress
+ReactDOM.render(
+  <React.StrictMode>
+    <WalletAddress />
+  </React.StrictMode>,
+  document.getElementById("walletAddress")
+);
