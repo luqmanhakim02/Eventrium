@@ -172,6 +172,39 @@ ol {
 	letter-spacing: 2px;
 }
 
+.wallet-btn {
+    display: inline-block;
+    font-size: 14px;
+    padding: 8px 15px;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: #52AB98;
+    border-radius: 10px;
+	border-width: 0px;
+    box-shadow: 0 0 10px transparent; /* Initially transparent shadow */
+    animation: shadowAnimation 3s linear infinite;
+}
+
+@keyframes shadowAnimation {
+    0% {
+        box-shadow: 0 0 10px transparent;
+    }
+    25% {
+        box-shadow: 0 0 10px #98A152;
+    }
+    50% {
+        box-shadow: 0 0 10px #5298AB;
+    }
+    75% {
+        box-shadow: 0 0 10px #AB5298;
+    }
+    100% {
+        box-shadow: 0 0 10px transparent;
+    }
+}
+
+
 .site-btn {
 	font-size: 14px;
 	color: #ffffff;

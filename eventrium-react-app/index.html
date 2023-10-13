@@ -14,6 +14,8 @@
       rel="stylesheet"
     />
 
+    <script>global = globalThis</script>
+
     <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
@@ -23,16 +25,12 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
-    <script>
-      const activePage = "index";
-    </script>
   </head>
 
   <body>
     <div id="preloder">
       <div className="loader"></div>
     </div>
-
     <header class="header">
       <div class="container">
         <div class="row">
@@ -41,7 +39,7 @@
               <a href="./index.html"><img src="img/logo.png" alt="" /></a>
             </div>
           </div>
-          <div class="col-lg-7">
+          <div class="col-lg-6">
             <nav class="header__menu">
               <ul>
                 <li class="active"><a href="./index.html">Home</a></li>
@@ -51,18 +49,9 @@
               </ul>
             </nav>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-3">
             <div class="header__cart">
-              <ul>
-                <li>
-                  <a href="#"><i class="fa fa-heart"></i> <span>1</span></a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="fa fa-shopping-bag"></i> <span>3</span></a
-                  >
-                </li>
-              </ul>
+               
               <div id="walletAddress"></div>
             </div>
           </div>

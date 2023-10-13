@@ -1,15 +1,8 @@
 import { PeraWalletConnect } from '@perawallet/connect';
-//import algosdk, { waitForConfirmation } from 'algosdk';
 import { useEffect, useState } from 'react';
 
 // Create the PeraWalletConnect instance outside the component
 const peraWallet = new PeraWalletConnect();
-
-// The app ID on testnet
-//const appIndex = 122184273;
-
-// connect to the algorand node
-//const algod = new algosdk.Algodv2('', 'https://testnet-api.algonode.cloud', 443);
 
 function WalletAddress() {
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
@@ -30,12 +23,12 @@ function WalletAddress() {
 
   return (
       <div>
-        <div><a className="btn-wallet"
+        <div><button className='wallet-btn'
           onClick={
             isConnectedToPeraWallet ? handleDisconnectWalletClick : handleConnectWalletClick
           }>
           {isConnectedToPeraWallet ? "Disconnect" : "Connect to Pera Wallet"}
-        </a></div>
+        </button ></div>
       </div>
   );
 

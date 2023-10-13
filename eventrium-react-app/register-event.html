@@ -14,6 +14,8 @@
       rel="stylesheet"
     />
 
+    <script>global = globalThis</script>
+    
     <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
@@ -40,7 +42,7 @@
               <a href="./index.html"><img src="img/logo.png" alt="" /></a>
             </div>
           </div>
-          <div class="col-lg-7">
+          <div class="col-lg-6">
             <nav class="header__menu">
               <ul>
                 <li><a href="./index.html">Home</a></li>
@@ -52,18 +54,9 @@
               </ul>
             </nav>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-3">
             <div class="header__cart">
-              <ul>
-                <li>
-                  <a href="#"><i class="fa fa-heart"></i> <span>1</span></a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="fa fa-shopping-bag"></i> <span>3</span></a
-                  >
-                </li>
-              </ul>
+               
               <div id="walletAddress"></div>
             </div>
           </div>
@@ -375,6 +368,6 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    <script type= "module" src="src/component-walletAddress.tsx"></script>
+    <script type= "module" src="src/walletAddress.tsx"></script>
   </body>
 </html>
