@@ -1,0 +1,34 @@
+#pragma version 4
+
+# Define the event's parameters
+int event_price
+bytes event_name
+bytes event_date
+bytes event_description
+
+# Check the amount of Algos sent
+txn Amount
+int 0 // Allow any amount, as it's provided by the wallet
+>=
+bnz sufficient_funds
+
+# Check event details (name, date, and description)
+txn ApplicationID
+app_param_get 0 // Get the event name
+event_name
+==
+txn ApplicationID
+app_param_get 1 // Get the event date
+event_date
+==
+txn ApplicationID
+app_param_get 2 // Get the event price
+event_price
+==
+txn ApplicationID
+app_param_get 3 // Get the event description
+event_description
+==
+
+sufficient_funds:
+int 1
