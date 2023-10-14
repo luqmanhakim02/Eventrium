@@ -1,10 +1,9 @@
-import { PeraWalletConnect } from '@perawallet/connect';
 import { useEffect, useState } from 'react';
+import { PeraWalletConnect } from '@perawallet/connect';
 
-// Create the PeraWalletConnect instance outside the component
 const peraWallet = new PeraWalletConnect();
 
-function WalletAddress() {
+function WalletAddress({ onAddressChange }: { onAddressChange: (address: string | null) => void }) {
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
   const isConnectedToPeraWallet = !!accountAddress;
 
@@ -12,41 +11,47 @@ function WalletAddress() {
     // reconnect to session when the component is mounted
     peraWallet.reconnectSession().then((accounts) => {
       // Setup the disconnect event listener
-      peraWallet.connector?.on("disconnect", handleDisconnectWalletClick);
-    
+      peraWallet.connector?.on('disconnect', handleDisconnectWalletClick);
+
       if (accounts.length) {
-        setAccountAddress(accounts[0]);
+        const newAddress = accounts[0];
+        setAccountAddress(newAddress);
+        onAddressChange(newAddress); // Notify parent component of the wallet address
       }
     });
-
   }, []);
-
-  return (
-      <div>
-        <div><button className='wallet-btn'
-          onClick={
-            isConnectedToPeraWallet ? handleDisconnectWalletClick : handleConnectWalletClick
-          }>
-          {isConnectedToPeraWallet ? "Disconnect" : "Connect to Pera Wallet"}
-        </button ></div>
-      </div>
-  );
 
   function handleConnectWalletClick() {
     peraWallet.connect().then((newAccounts) => {
       // setup the disconnect event listener
       peraWallet.connector?.on('disconnect', handleDisconnectWalletClick);
 
-      setAccountAddress(newAccounts[0]);
+      if (newAccounts.length > 0) {
+        const newAddress = newAccounts[0];
+        setAccountAddress(newAddress);
+        onAddressChange(newAddress); // Notify parent component of the wallet address
+      }
     });
   }
 
   function handleDisconnectWalletClick() {
     peraWallet.disconnect();
     setAccountAddress(null);
+    onAddressChange(null); // Notify parent component of the disconnection
   }
 
-  }
-
+  return (
+    <div>
+      <div>
+        <button
+          className="wallet-btn"
+          onClick={isConnectedToPeraWallet ? handleDisconnectWalletClick : handleConnectWalletClick}
+        >
+          {isConnectedToPeraWallet ? 'Disconnect' : 'Connect to Pera Wallet'}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default WalletAddress;

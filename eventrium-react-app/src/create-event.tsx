@@ -1,18 +1,20 @@
 import React from 'react';
-import WalletAddress from './walletConnect'
 import CreateEvent from './createEvent';
+import { createRoot } from 'react-dom/client';
 import { WalletAddressProvider } from './WalletAddressContext';
 
-function App() {
-  return (
-    <WalletAddressProvider>
-      <div>
-        <h1>Your App</h1>
-        <WalletAddress />
-        <CreateEvent />
-      </div>
-    </WalletAddressProvider>
-  );
-}
+const rootElement = document.getElementById('create');
 
-export default App;
+if (rootElement) {
+  const root = createRoot(rootElement);
+
+  root.render(
+    <React.StrictMode>
+      <WalletAddressProvider>
+        <CreateEvent />
+      </WalletAddressProvider>
+    </React.StrictMode>
+  );
+} else {
+  console.error("Element with id 'create' not found.");
+}

@@ -1,34 +1,40 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { usePerawalletConnect } from './PerawalletConnectContext';
 
-interface WalletAddressContextType {
-  walletAddress: string | null;
-  updateWalletAddress: (address: string | null) => void;
-}
+const WalletAddressContext = createContext<string | null>(null);
 
-const WalletAddressContext = createContext<WalletAddressContextType | undefined>(undefined);
-
-interface WalletAddressProviderProps {
+type WalletAddressProviderProps = {
   children: ReactNode;
-}
+};
 
 export const WalletAddressProvider: React.FC<WalletAddressProviderProps> = ({ children }) => {
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
+  const peraWalletConnect = usePerawalletConnect();
 
-  const updateWalletAddress = (address: string | null) => {
-    setWalletAddress(address);
-  };
+  useEffect(() => {
+    async function fetchWalletAddress() {
+      try {
+        if (peraWalletConnect) {
+          const newAccounts = await peraWalletConnect.connect();
+          if (newAccounts.length > 0) {
+            setAddress(newAccounts[0]);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching wallet address:', error);
+      }
+    }
+
+    fetchWalletAddress();
+  }, [peraWalletConnect]);
 
   return (
-    <WalletAddressContext.Provider value={{ walletAddress, updateWalletAddress }}>
+    <WalletAddressContext.Provider value={address}>
       {children}
     </WalletAddressContext.Provider>
   );
 };
 
 export const useWalletAddress = () => {
-  const context = useContext(WalletAddressContext);
-  if (!context) {
-    throw new Error('useWalletAddress must be used within a WalletAddressProvider');
-  }
-  return context;
+  return useContext(WalletAddressContext);
 };
