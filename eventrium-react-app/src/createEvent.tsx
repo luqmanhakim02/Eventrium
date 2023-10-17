@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import algosdk from 'algosdk';
-import { Buffer } from 'buffer';
-import { useWalletAddress } from './WalletAddressContext';
-import { usePerawalletConnect } from './PerawalletConnectContext';
+import { PeraWalletConnect } from '@perawallet/connect';
 
-
-const algodToken = 'your-algod-token';
+// Replace with your Algorand node information
+const algodToken = '';
 const algodServer = 'https://testnet-api.algonode.cloud';
+const appId = 434856235; // Replace with your application ID
 
 const CreateEvent: React.FC = () => {
-  const walletAddress = useWalletAddress();
-  const peraWalletConnect = usePerawalletConnect();
-
+  // State variables
   const [transactionId, setTransactionId] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [peraWalletConnect, setPeraWalletConnect] = useState<PeraWalletConnect | null>(null);
+  const [eventID, setEventID] = useState<string | null>(null); // Event ID (unique identifier)
 
+  // Form data state
   const [formData, setFormData] = useState({
     event_name: '',
     event_date: '',
@@ -21,6 +22,8 @@ const CreateEvent: React.FC = () => {
     description: '',
   });
 
+
+  // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -28,44 +31,57 @@ const CreateEvent: React.FC = () => {
     });
   };
 
+  
+  console.log(eventID + "before submit");
+  // Handle form submission
   const handleSubmit = async (event: React.FormEvent) => {
+
+    console.log(eventID + "handle submit");
     event.preventDefault();
 
     if (!walletAddress) {
       console.error('Wallet address is not available. Please connect to your wallet.');
       return;
     }
+ 
+
 
     try {
-      const client = new algosdk.Algodv2(algodToken, algodServer);
+      console.log(eventID + "initial");
+      // Initialize the Algorand client
+      const client = new algosdk.Algodv2(algodToken, algodServer, 443);
       const params: algosdk.SuggestedParams = await client.getTransactionParams().do();
 
-      // Load the Teal program content from the imported file
-      const tealProgramFilePath = '/create-event.teal'; // Replace with the correct file path
-      const tealProgramString = await import(tealProgramFilePath).then((module) => module.default);
-      const tealProgramUint8 = new Uint8Array(Buffer.from(tealProgramString));
-
+        console.log(eventID);
       // Convert eventDetails to the required format
       const eventDetails = {
-        name: formData.event_name,
-        date: formData.event_date,
-        price: parseFloat(formData.event_price), // Event Price in microAlgos
+        eventID: eventID,
+        event_name: formData.event_name,
+        event_date: formData.event_date,
+        event_price:formData.event_price, // Event Price in microAlgos
         description: formData.description,
       };
 
-      const eventDetailsArray = Array.from(algosdk.encodeObj(eventDetails));
+      // Encode eventDetails as Uint8Array
+      const eventDetailsArray = [Uint8Array.from(algosdk.encodeObj(eventDetails))];
 
+      // Create an Application NoOp transaction
       const txn = algosdk.makeApplicationNoOpTxn(
         walletAddress,
         params,
-        tealProgramUint8 as any,
-        undefined,
-        undefined,
+        appId,
         eventDetailsArray
       );
 
       try {
-        const signedTxn = await peraWalletConnect.signTransaction([[{ txn }]]);
+        // Sign the transaction using PeraWalletConnect
+        const signedTxn = await peraWalletConnect?.signTransaction([[{ txn }]]);
+        if (!signedTxn) {
+          console.error('Error signing the transaction.');
+          return;
+        }
+
+        // Send the signed transaction
         const response = await client.sendRawTransaction(signedTxn[0]).do();
 
         if (response.txId) {
@@ -73,6 +89,7 @@ const CreateEvent: React.FC = () => {
           console.log(`Transaction ID: ${txId}`);
           console.log('Event created successfully.');
           setTransactionId(txId);
+          
         }
       } catch (error) {
         console.error('Error signing the transaction:', error);
@@ -81,6 +98,30 @@ const CreateEvent: React.FC = () => {
       console.error('Error:', error);
     }
   };
+
+  
+  console.log(eventID + "test");
+
+  // Effect to initialize PeraWalletConnect and connect to wallet
+  useEffect(() => {
+    // Instantiate PeraWalletConnect when the component is mounted
+    const walletConnect = new PeraWalletConnect();
+    setPeraWalletConnect(walletConnect);
+
+    // Reconnect to session when the component is mounted
+    walletConnect.reconnectSession().then((accounts) => {
+      if (accounts.length) {
+        const newAddress = accounts[0];
+        setWalletAddress(newAddress);
+      }
+    });
+
+     // Generate a random event ID (you can use any suitable method)
+  const randomID = Math.random().toString(36).substr(2, 9); // Example random ID
+  setEventID(randomID);
+
+
+  }, []);
 
   return (
     <div>
@@ -141,6 +182,7 @@ const CreateEvent: React.FC = () => {
       ) : (
         <p>Creating Transaction...</p>
       )}
+      {<p>Event ID: {eventID}</p>}
     </div>
   );
 };

@@ -1,40 +1,71 @@
-import algosdk from "algosdk";
+import React, { useState, useEffect } from 'react';
+import algosdk from 'algosdk';
+import { PeraWalletConnect } from '@perawallet/connect';
 
 const algodToken = ""; // Your AlgoD API token
 const algodServer = "https://testnet-api.algonode.cloud"; // AlgoD API server
 const algodPort = "443";
-const senderMnemonic =
-  "survey pride derive laundry increase result nerve addict trust zone baby element recipe comfort wheat such name master axis zoo broom engage inflict above rely"; // The sender's mnemonic (private key) to sign transactions
-//change this
 
-const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+const JoinEvent: React.FC = () => {
+  
+    const [transactionId, setTransactionId] = useState<string | null>(null);
+    const [walletAddress, setWalletAddress] = useState<string | null>(null);
+    const [peraWalletConnect, setPeraWalletConnect] = useState<PeraWalletConnect | null>(null);
 
-function JoinEvent() {
-  async function deductEventCost() {
+    //const handleSubmit = async (event: React.FormEvent) => {
+    const deductEventCost = async () => {
+
+      if (!walletAddress) {
+        console.error('Wallet address is not available. Please connect to your wallet.');
+        return;
+      }  
+
     try {
-      const senderAccount = algosdk.mnemonicToSecretKey(senderMnemonic);
+      const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+
+      const txnParams: algosdk.SuggestedParams = await algodClient.getTransactionParams().do();
 
       // Create a transaction to interact with the smart contract
-      const txnParams = await algodClient.getTransactionParams().do();
       const txn = algosdk.makePaymentTxnWithSuggestedParams(
-        //change this
-        senderAccount.addr,
-        "LWEHP7VSZGN7IEBOWP25D2EMUDZSRWA7JNXA52XJZQ6RY62WO4D44HG3FM", // Replace with the receiver's address
-        100000000, // Amount in microAlgos (100 Algos) = 100000000
+        walletAddress,
+        "DFDFIMRFIRF3JZW3NPAKHTZ3YDL6CVNIO6MRRBSOJK6QO4LEJ6L4TRNZPE", // Replace with the receiver's address
+        100000, // Amount in microAlgos (100 Algos) = 100000000
         undefined,
         undefined,
         txnParams
       );
 
-      // Sign the transaction
-      const signedTxn = algosdk.signTransaction(txn, senderAccount.sk);
+      try {
+        // Sign the transaction using PeraWalletConnect
+        const signedTxn = await peraWalletConnect?.signTransaction([[{ txn }]]);
+        if (!signedTxn) {
+          console.error('Error signing the transaction.');
+          return;
+        }
 
+        // Send the signed transaction
+        const response = await algodClient.sendRawTransaction(signedTxn[0]).do();
+
+        if (response.txId) {
+          const txId = response.txId;
+          console.log(`Transaction ID: ${txId}`);
+          console.log("Event cost deducted successfully.");
+          localStorage.setItem("transactionID", txId);
+          setTransactionId(txId);
+          window.location.href = "my-ticket.html";
+        }
+      } catch (error) {
+        console.error('Error signing the transaction:', error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
       // Submit the transaction to the Algorand network
-      const response = await algodClient
-        .sendRawTransaction(signedTxn.blob)
-        .do();
+      //const response = await algodClient
+        //.sendRawTransaction(signedTxn.blob)
+        //.do();
 
-      if (response.txId) {
+      /*if (response.txId) {
         const txId = response.txId;
         console.log(`Transaction ID: ${txId}`);
         console.log("Event cost deducted successfully.");
@@ -46,8 +77,23 @@ function JoinEvent() {
       }
     } catch (error) {
       console.error("Error deducting event cost:", error);
-    }
+    }*/
   }
+
+  // Effect to initialize PeraWalletConnect and connect to wallet
+  useEffect(() => {
+    // Instantiate PeraWalletConnect when the component is mounted
+    const walletConnect = new PeraWalletConnect();
+    setPeraWalletConnect(walletConnect);
+
+    // Reconnect to session when the component is mounted
+    walletConnect.reconnectSession().then((accounts) => {
+      if (accounts.length) {
+        const newAddress = accounts[0];
+        setWalletAddress(newAddress);
+      }
+    });
+  }, []);
 
   return (
     <center>

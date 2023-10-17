@@ -9,24 +9,23 @@ bnz create_event
 // Handle event creation
 create_event:
     // Create an event struct with event details
-    byte "Event Name: "
-    byte ""
-    byte "Event Date: "
-    byte ""
-    byte "Event Price: "
-    byte ""
-    byte "Event Description: "
-    byte ""
-    concat
+    byte "eventID: "
     txn ApplicationID
     itob
     concat
+    byte "event_name: "
     txn ApplicationID
     itob
     concat
+    byte "event_date: "
     txn ApplicationID
     itob
     concat
+    byte "event_price: "
+    txn ApplicationID
+    itob
+    concat
+    byte "description: "
     txn ApplicationID
     itob
     concat
@@ -43,7 +42,7 @@ bnz join_event
 
 join_event:
     // Load event ID from the call data
-    byte "Event ID: "
+    byte "eventID: "
     concat
     txn ApplicationID
     itob
@@ -61,13 +60,15 @@ join_event:
 
 event_exists:
     // Load event details from the application local state
-    byte "Event Name: "
+    byte "eventID: "
     app_local_get
-    byte "Event Date: "
+    byte "event_name: "
     app_local_get
-    byte "Event Price: "
+    byte "event_date: "
     app_local_get
-    byte "Event Description: "
+    byte "event_price: "
+    app_local_get
+    byte "description: "
     app_local_get
 
     // Check if the payment amount is sufficient

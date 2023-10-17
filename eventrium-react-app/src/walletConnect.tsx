@@ -16,7 +16,7 @@ function WalletAddress({ onAddressChange }: { onAddressChange: (address: string 
       if (accounts.length) {
         const newAddress = accounts[0];
         setAccountAddress(newAddress);
-        onAddressChange(newAddress); // Notify parent component of the wallet address
+        onAddressChange(newAddress); // Notify the parent component of the wallet address
       }
     });
   }, []);
@@ -29,7 +29,7 @@ function WalletAddress({ onAddressChange }: { onAddressChange: (address: string 
       if (newAccounts.length > 0) {
         const newAddress = newAccounts[0];
         setAccountAddress(newAddress);
-        onAddressChange(newAddress); // Notify parent component of the wallet address
+        onAddressChange(newAddress); // Notify the parent component of the wallet address
       }
     });
   }
@@ -37,7 +37,7 @@ function WalletAddress({ onAddressChange }: { onAddressChange: (address: string 
   function handleDisconnectWalletClick() {
     peraWallet.disconnect();
     setAccountAddress(null);
-    onAddressChange(null); // Notify parent component of the disconnection
+    onAddressChange(null); // Notify the parent component of the disconnection
   }
 
   return (
