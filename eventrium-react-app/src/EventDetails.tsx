@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { getLocalState } from './localState'; // Import your getLocalState function
+import React, { useState } from "react";
 
 function EventDetails() {
-  const [eventID, setEventID] = useState(''); // Input field for event ID
+  const [eventID, setEventID] = useState(""); // Input field for event ID
   const [eventDetails, setEventDetails] = useState<{
     eventName: string;
     eventDate: string;
@@ -12,25 +11,32 @@ function EventDetails() {
 
   const handleGetEventDetails = async () => {
     if (!eventID) {
-      console.error('Please enter an event ID.');
+      console.error("Please enter an event ID.");
       return;
     }
 
-    // Call the getLocalState function to retrieve event details
-    const eventData = await getLocalState(eventID);
+    const storedEventDetails = localStorage.getItem("eventDetails");
 
-    if (eventData) {
-      setEventDetails(eventData as {
-        eventName: string;
-        eventDate: string;
-        eventPrice: number;
-        description: string;
-      });
+    if (storedEventDetails) {
+      const eventData = JSON.parse(storedEventDetails);
+
+      if (eventData) {
+        setEventDetails(
+          eventData as {
+            eventName: string;
+            eventDate: string;
+            eventPrice: number;
+            description: string;
+          }
+        );
+      } else {
+        console.error("Invalid event data in localStorage.");
+        setEventDetails(null);
+      }
     } else {
-      console.error('Event not found or details not available.');
-      setEventDetails(null);
+      console.log("No event details found in localStorage.");
     }
-  }
+  };
 
   return (
     <div>

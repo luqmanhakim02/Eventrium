@@ -29,7 +29,7 @@ const JoinEvent: React.FC = () => {
       const txn = algosdk.makePaymentTxnWithSuggestedParams(
         walletAddress,
         "DFDFIMRFIRF3JZW3NPAKHTZ3YDL6CVNIO6MRRBSOJK6QO4LEJ6L4TRNZPE", // Replace with the receiver's address
-        100000, // Amount in microAlgos (100 Algos) = 100000000
+        1000000, // Amount in microAlgos (1 Algos) = 1000000
         undefined,
         undefined,
         txnParams

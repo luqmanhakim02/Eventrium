@@ -13,7 +13,8 @@ const CreateEvent: React.FC = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [peraWalletConnect, setPeraWalletConnect] =
     useState<PeraWalletConnect | null>(null);
-  const [eventID, setEventID] = useState<string | null>(null); // Event ID (unique identifier)
+  const [eventID, setEventID] = useState<string>("");
+  // Event ID (unique identifier)
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -93,6 +94,46 @@ const CreateEvent: React.FC = () => {
           console.log(`Transaction ID: ${txId}`);
           console.log("Event created successfully.");
           setTransactionId(txId);
+
+          // Storing an Event
+          const event = {
+            eventID: eventID,
+            transactionId: txId,
+            eventDetails: eventDetails,
+            walletAddress: walletAddress,
+            params: params,
+            appId: appId,
+            eventDetailsArray: eventDetailsArray,
+          };
+
+          // Retrieve existing events or initialize an empty array
+          const existingEvents = JSON.parse(
+            localStorage.getItem("events") || "[]"
+          );
+
+          // Append the new event to the array
+          existingEvents.push(event);
+
+          // Store the updated array in local storage
+          localStorage.setItem("events", JSON.stringify(existingEvents));
+          
+          if (existingEvents.length === 0) {
+            console.log("No events stored in local storage.");
+          } else {
+            console.log("Stored Events:");
+            existingEvents.forEach((event: { eventID: any; transactionId: any; eventDetails: any; walletAddress: any; params: any; appId: any; eventDetailsArray: any; }, index: number) => {
+              console.log(`Event ${index + 1}:`);
+              console.log(`Event ID: ${event.eventID}`);
+              console.log(`Transaction ID: ${event.transactionId}`);
+              console.log("Event Details:", event.eventDetails);
+              console.log(`Wallet Address: ${event.walletAddress}`);
+              console.log("Params:", event.params);
+              console.log(`App ID: ${event.appId}`);
+              console.log("Event Details Array:", event.eventDetailsArray);
+              console.log("\n");
+            });
+          }
+          
         }
       } catch (error) {
         console.error("Error signing the transaction:", error);
@@ -178,7 +219,8 @@ const CreateEvent: React.FC = () => {
             type="file"
             accept="image/*" // Restrict to image files
           />
-          <br></br><br></br>
+          <br></br>
+          <br></br>
         </div>
         <div>
           <button type="submit">Create Event</button>
