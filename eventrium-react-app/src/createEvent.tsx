@@ -5,7 +5,7 @@ import { PeraWalletConnect } from "@perawallet/connect";
 // Replace with your Algorand node information
 const algodToken = "";
 const algodServer = "https://testnet-api.algonode.cloud";
-const appId = 434856235; // Replace with your application ID
+const appId = 438536777; // Replace with your application ID
 
 const CreateEvent: React.FC = () => {
   // State variables

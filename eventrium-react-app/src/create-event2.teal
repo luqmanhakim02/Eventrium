@@ -8,28 +8,30 @@ bnz create_event
 
 // Handle event creation
 create_event:
-    // Create an event struct with event details
-    byte "eventID: "
+    // Create event ID
+    byte "eventID"
     txn ApplicationID
-    itob
     concat
-    byte "event_name: "
-    txn ApplicationID
-    itob
+    // Store event_name
+    byte "event_name"
+    txna ApplicationArgs 0
     concat
-    byte "event_date: "
-    txn ApplicationID
-    itob
+    app_global_put
+    // Store event_date
+    byte "event_date"
+    txna ApplicationArgs 1
     concat
-    byte "event_price: "
-    txn ApplicationID
-    itob
+    app_global_put
+    // Store event_price
+    byte "event_price"
+    txna ApplicationArgs 2
     concat
-    byte "description: "
-    txn ApplicationID
-    itob
+    app_global_put
+    // Store description
+    byte "description"
+    txna ApplicationArgs 3
     concat
-
+    app_global_put
     // Mark the call as successful
     int 1
     return
@@ -42,13 +44,12 @@ bnz join_event
 
 join_event:
     // Load event ID from the call data
-    byte "eventID: "
+    byte "eventID"
     concat
     txn ApplicationID
-    itob
 
-    // Check if the event ID exists in the local state
-    app_local_get
+    // Check if the event ID exists in the global state
+    app_global_get
 
     // If the event ID exists, allow the user to join
     int 0
@@ -59,17 +60,15 @@ join_event:
     return
 
 event_exists:
-    // Load event details from the application local state
-    byte "eventID: "
-    app_local_get
-    byte "event_name: "
-    app_local_get
-    byte "event_date: "
-    app_local_get
-    byte "event_price: "
-    app_local_get
-    byte "description: "
-    app_local_get
+    // Load event details from the application global state
+    byte "event_name"
+    app_global_get
+    byte "event_date"
+    app_global_get
+    byte "event_price"
+    app_global_get
+    byte "description"
+    app_global_get
 
     // Check if the payment amount is sufficient
     int 0
@@ -77,8 +76,8 @@ event_exists:
     >=
     bnz payment_sufficient
 
-    // Payment is insufficient
-    int 0
+    // Payment is sufficient, allow the user to join
+    int 1
     return
 
 payment_sufficient:

@@ -6,7 +6,7 @@ const algodServer = 'https://testnet-api.algonode.cloud'; // Replace with your A
 const algodToken = ''; // Replace with your Algorand node token
 
 // Replace these with your contract and transaction details
-const appId = 434856235; // Replace with your application ID
+const appId = 438536777; // Replace with your application ID
 
 export async function getLocalState(eventID: string) {
   try {
