@@ -3,40 +3,26 @@ import React, { useState, useEffect } from 'react';
 const existingEvents = JSON.parse(localStorage.getItem("events") || "[]");
 
 const EventList: React.FC = () => {
-  const [selectedEventID, setSelectedEventID] = useState<string | null>(null);
+  const [searchEventID, setSearchEventID] = useState<string>('');
   const [eventDetails, setEventDetails] = useState<any>(null);
 
-  const handleEventSelection = (eventID: string) => {
-    if (eventID !== selectedEventID) {
-      setSelectedEventID(eventID);
-    }
+  const handleSearchEvent = (eventID: string) => {
+    const selectedEvent = existingEvents.find((event: any) => event.eventID === eventID);
+    setEventDetails(selectedEvent || null);
   };
 
-  useEffect(() => {
-    const selectedEvent = existingEvents.find((event: any) => event.eventID === selectedEventID);
-    setEventDetails(selectedEvent || null);
-  }, [selectedEventID]);
-  
-
   return (
-    <div>
-      <h2>Event List</h2>
+    <div className='form'>
       {existingEvents.length > 0 ? (
         <div>
-          <p>Select an Event:</p>
-          <select
-            value={selectedEventID || ''}
-            onChange={(e) => handleEventSelection(e.target.value)}
-          >
-            <option value="" disabled>
-              Select an Event
-            </option>
-            {existingEvents.map((event: any) => (
-              <option key={event.eventID} value={event.eventID}>
-                Event ID: {event.eventID}
-              </option>
-            ))}
-          </select>
+          <p>Search for an Event by Event ID:</p>
+          <input
+            type="text"
+            value={searchEventID}
+            onChange={(e) => setSearchEventID(e.target.value)}
+            placeholder="Enter Event ID"
+          />
+          <button onClick={() => handleSearchEvent(searchEventID)}>Search</button>
         </div>
       ) : (
         <p>No events stored in local storage.</p>
@@ -44,7 +30,8 @@ const EventList: React.FC = () => {
 
       {eventDetails && (
         <div>
-          <h3>Event Details:</h3>
+          <br></br>
+          <h3>Event Details:</h3><br></br>
           <p>Event ID: {eventDetails.eventID}</p>
           <p>Event Name: {eventDetails.eventDetails.event_name}</p>
           <p>Event Date: {eventDetails.eventDetails.event_date}</p>
@@ -52,7 +39,6 @@ const EventList: React.FC = () => {
           <p>Description: {eventDetails.eventDetails.description}</p>
           <p>Transaction ID: {eventDetails.transactionId}</p>
           <p>Wallet Address: {eventDetails.walletAddress}</p>
-          <p>App ID: {eventDetails.appId}</p>
         </div>
       )}
     </div>

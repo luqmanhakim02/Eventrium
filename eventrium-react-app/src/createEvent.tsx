@@ -14,6 +14,7 @@ const CreateEvent: React.FC = () => {
   const [peraWalletConnect, setPeraWalletConnect] =
     useState<PeraWalletConnect | null>(null);
   const [eventID, setEventID] = useState<string>("");
+  
   // Event ID (unique identifier)
 
   // Form data state
@@ -40,6 +41,9 @@ const CreateEvent: React.FC = () => {
 
     if (!walletAddress) {
       console.error(
+        "Wallet address is not available. Please connect to your wallet."
+      );
+      alert(
         "Wallet address is not available. Please connect to your wallet."
       );
       return;
@@ -79,6 +83,7 @@ const CreateEvent: React.FC = () => {
         const signedTxn = await peraWalletConnect?.signTransaction([[{ txn }]]);
         if (!signedTxn) {
           console.error("Error signing the transaction.");
+          alert("Error signing the transaction.");
           return;
         }
 
@@ -133,9 +138,11 @@ const CreateEvent: React.FC = () => {
         }
       } catch (error) {
         console.error("Error signing the transaction:", error);
+        alert("Error signing the transaction" + error);
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("Error: " + error);
     }
   };
 
