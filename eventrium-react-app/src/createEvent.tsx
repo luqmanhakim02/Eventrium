@@ -34,10 +34,8 @@ const CreateEvent: React.FC = () => {
     });
   };
 
-  console.log(eventID + "before submit");
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent) => {
-    console.log(eventID + "handle submit");
     event.preventDefault();
 
     if (!walletAddress) {
@@ -48,14 +46,12 @@ const CreateEvent: React.FC = () => {
     }
 
     try {
-      console.log(eventID + "initial");
       // Initialize the Algorand client
       const client = new algosdk.Algodv2(algodToken, algodServer, 443);
       const params: algosdk.SuggestedParams = await client
         .getTransactionParams()
         .do();
 
-      console.log(eventID);
       // Convert eventDetails to the required format
       const eventDetails = {
         eventID: eventID,
@@ -143,7 +139,6 @@ const CreateEvent: React.FC = () => {
     }
   };
 
-  console.log(eventID + "test");
 
   // Effect to initialize PeraWalletConnect and connect to wallet
   useEffect(() => {
