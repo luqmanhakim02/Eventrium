@@ -1,0 +1,86 @@
+#pragma version 6
+
+// Define application mode for create and join events
+txn ApplicationID
+int 0
+==
+bnz create_event
+
+// Handle event creation
+create_event:
+    // Create event ID
+    byte "eventID"
+    txn ApplicationID
+    concat
+    // Store event_name
+    byte "event_name"
+    txna ApplicationArgs 0
+    concat
+    app_global_put
+    // Store event_date
+    byte "event_date"
+    txna ApplicationArgs 1
+    concat
+    app_global_put
+    // Store event_price
+    byte "event_price"
+    txna ApplicationArgs 2
+    concat
+    app_global_put
+    // Store description
+    byte "description"
+    txna ApplicationArgs 3
+    concat
+    app_global_put
+    // Mark the call as successful
+    int 1
+    return
+
+// Handle event joining
+txn ApplicationID
+int 1
+==
+bnz join_event
+
+join_event:
+    // Load event ID from the call data
+    byte "eventID"
+    concat
+    txn ApplicationID
+
+    // Check if the event ID exists in the global state
+    app_global_get
+
+    // If the event ID exists, allow the user to join
+    int 0
+    bnz event_exists
+
+    // Event does not exist
+    int 0
+    return
+
+event_exists:
+    // Load event details from the application global state
+    byte "event_name"
+    app_global_get
+    byte "event_date"
+    app_global_get
+    byte "event_price"
+    app_global_get
+    byte "description"
+    app_global_get
+
+    // Check if the payment amount is sufficient
+    int 0
+    txn Amount
+    >=
+    bnz payment_sufficient
+
+    // Payment is sufficient, allow the user to join
+    int 1
+    return
+
+payment_sufficient:
+    // Payment is sufficient, allow the user to join
+    int 1
+    return

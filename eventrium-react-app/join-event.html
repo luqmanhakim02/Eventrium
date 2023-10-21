@@ -14,6 +14,9 @@
       rel="stylesheet"
     />
 
+    <script>global = globalThis</script>
+    <link rel="icon" href="img/favico.ico" type="image/x-icon">
+
     <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
@@ -23,6 +26,20 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <script>
+      // Get the current URL
+      const currentURL = window.location.href;
+    
+      // Define the target URL and event ID
+      const targetURL = "join-event.html?eventID=0";
+    
+      // Check if the current URL ends with "join-event.html"
+      if (currentURL.endsWith("join-event.html")) {
+        // Redirect to the target URL
+        window.location.href = targetURL;
+      }
+    </script>
+    
   </head>
 
   <body>
@@ -38,30 +55,21 @@
               <a href="./index.html"><img src="img/logo.png" alt="" /></a>
             </div>
           </div>
-          <div class="col-lg-7">
+          <div class="col-lg-6">
             <nav class="header__menu">
               <ul>
                 <li><a href="./index.html">Home</a></li>
                 <li><a href="./my-event.html">My Event</a></li>
                 <li class="active">
-                  <a href="./register-event.html">Register Event</a>
+                  <a href="./register-event.html">Join Event</a>
                 </li>
-                <li><a href="./certificates.html">Certificates</a></li>
+                <li><a href="./create-event.html">Create Event</a></li>
               </ul>
             </nav>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-3">
             <div class="header__cart">
-              <ul>
-                <li>
-                  <a href="#"><i class="fa fa-heart"></i> <span>1</span></a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="fa fa-shopping-bag"></i> <span>3</span></a
-                  >
-                </li>
-              </ul>
+               
               <div id="walletAddress"></div>
             </div>
           </div>
@@ -119,106 +127,8 @@
       </div>
     </section>
 
-    <section>
-      <div class="container">
-        <div style="height: 200px">
-          <img
-            style="width: 100%; height: 100%; object-fit: cover"
-            src="img/featured/feature-1.jpg"
-          />
-        </div>
-        <div style="margin: 30px">
-          <div class="row">
-            <div style="width: 75%; padding-right: 30px">
-              <h2><b>ALGORAND Hackathon</b><br /><br /></h2>
-              <h4>
-                Date : October 18 · 9:00am - October 23 · 11:59pm +08UTC<br />
-                UTM, Johor Bahru <br />
-                Algorand Student Council<br /><br />
-              </h4>
-              Welcome to the Algorand Hackathon! This event is a great
-              opportunity for students to showcase their skills and gain
-              valuable experience in the field of blockchain technology and
-              Python. The hackathon will take place on October 23, 2023, and
-              will feature a series of workshops and hands-on activities that
-              will allow participants to learn about the Algorand blockchain
-              platform and Python programming language.<br /><br />
-              <b>About This Event</b>
-              <br />- One Week Hackathon Competition <br />- Mobile eTicket
-              <br />- Winning Prizes
-
-              <br /><br />
-              The hackathon will be held online, and participants will have the
-              opportunity to work together in teams to develop their projects.
-              Each team will have access to the Algorand Developer Portal, which
-              will provide them with the tools they need to create their
-              projects.
-
-              <br /><br />
-              <b>Tags</b>
-              <br />
-              <h6 style="color: blue">
-                #hackathon #belajar #algorand #blockchain
-              </h6>
-
-              <br /><br />
-              <b>About the organizer</b>
-              <div
-                style="
-                  width: 100%;
-                  height: 100px;
-                  background: #ffff;
-                  border-radius: 20px;
-                "
-              >
-                <div class="row">
-                  <div class="">
-                    <img
-                      src="img/algo-logo.png"
-                      style="width: 70px; margin: 10px 30px; max-width: 100px;"
-                    />
-                  </div>
-                  <div class="">
-                    <div style="padding-top: 20px">
-                      <h4>Algorand Student Council</h4>
-                      <h6>1,077 followers</h6>
-                    </div>
-                  </div>
-                  <div style="margin: auto; color: blue">Follow</div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div
-                style="
-                  height: 130px;
-                  width: 250px;
-                  border-radius: 24px;
-                  border: 3.5px #f3f6fa solid;
-                "
-              >
-                <div id="join-event"></div>
-                <div
-                  style="
-                    text-align: center;
-                    color: #424242;
-                    font-size: 30px;
-                    font-family: Cairo;
-                    font-weight: 600;
-                    line-height: 50px;
-                    word-wrap: break-word;
-                    width: 100%;
-                  "
-                >
-                  100 ALGO
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div id="join-event"></div>
+    
     <footer class="footer spad">
       <div class="container">
         <div class="row">
@@ -308,6 +218,6 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
     <script type="module" src="/src/join-event-button.tsx"></script>
-    <script type= "module" src="src/component-walletAddress.tsx"></script>
+    <script type= "module" src="src/walletAddress.tsx"></script>
   </body>
 </html>
