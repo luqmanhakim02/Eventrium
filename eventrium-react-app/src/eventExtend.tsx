@@ -9,6 +9,7 @@ function formatDate(inputDate: string): string {
   }
 
   const [yyyy,mm,dd] = inputDate.split("-");
+  
   const monthNames = [
     "January",
     "February",
@@ -38,33 +39,35 @@ const EventExtend: React.FC = () => {
 
   return (
     <div className="col-lg-6 col-md-6 col-sm-6">
-      <div className="blog__item">
-        <div className="blog__item__pic">
-          <img src="img/featured/feature-2.jpg" alt="" />
-        </div>
-        <div className="blog__item__text">
-          <ul>
-            <li>
-              <i className="fa fa-calendar-o"></i>{" "}
-              {formatDate(existingEvents[0]?.eventDetails?.event_date)}
-            </li>
-            <li>
-              <i className="fa fa-comment-o"></i> {existingEvents.length}
-            </li>
-          </ul>
-          <h5>
-            <a href={`join-event.html?eventID=${existingEvents[0]?.eventDetails?.eventID || 1}`}>
-              {existingEvents[0]?.eventDetails?.event_name || "No Event Name"}
+      {existingEvents.map((event: { eventDetails: { event_date: string; eventID: any; event_name: any; description: any; }; }, index: React.Key | null | undefined) => (
+        <div className="blog__item" key={index}>
+          <div className="blog__item__pic">
+            <img src="img/featured/feature-2.jpg" alt="" />
+          </div>
+          <div className="blog__item__text">
+            <ul>
+              <li>
+                <i className="fa fa-calendar-o"></i>{" "}
+                {formatDate(event?.eventDetails?.event_date)}
+              </li>
+              <li>
+                <i className="fa fa-comment-o"></i> {existingEvents.length}
+              </li>
+            </ul>
+            <h5>
+              <a href={`join-event.html?eventID=${event?.eventDetails?.eventID || 1}`}>
+                {event?.eventDetails?.event_name || "No Event Name"}
+              </a>
+            </h5>
+            <p>
+              {event?.eventDetails?.description || "No Description"}
+            </p>
+            <a href={`join-event.html?eventID=${event?.eventDetails?.eventID || 1}`} className="blog__btn">
+              READ MORE <span className="arrow_right"></span>
             </a>
-          </h5>
-          <p>
-            {existingEvents[0]?.eventDetails?.description || "No Description"}
-          </p>
-          <a href={`join-event.html?eventID=${existingEvents[0]?.eventDetails?.eventID || 1}`} className="blog__btn">
-            READ MORE <span className="arrow_right"></span>
-          </a>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

@@ -95,6 +95,7 @@ const CreateEvent: React.FC = () => {
           console.log(`Transaction ID: ${txId}`);
           console.log("Event created successfully.");
           setTransactionId(txId);
+          alert("Event Created Successfully\nRefer Join Event");
 
           // Storing an Event
           const event = {
